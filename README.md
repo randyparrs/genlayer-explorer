@@ -19,11 +19,9 @@ A developer dashboard to visualize transactions, contract state, and validator c
 
 ## What Is GenLayer Explorer
 
-GenLayer Explorer is a developer tool that gives you a real time view of everything happening on the GenLayer network. It is the missing piece between deploying a contract and actually understanding what the validators are doing under the hood.
+GenLayer Explorer started as a personal tool I built to better understand what was actually happening when I deployed contracts to the GenLayer network. The Studio is great for deploying and running transactions, but I wanted something that showed me the full picture in one place — which validators ran, what models they used, whether they agreed, and what the contract state looked like after.
 
-With GenLayer Explorer you can search any contract address and inspect its full onchain state, browse all transactions with their status, watch validator consensus activity in real time, see which LLM each validator used and what result it returned, track the Optimistic Democracy flow from leader proposal to validator votes and appeals, and monitor the Equivalence Principle in action across validators.
-
-This tool is built entirely with genlayer-js and connects directly to GenLayer Studio locally or to Testnet Bradbury.
+It connects directly to GenLayer Studio locally or to Testnet Bradbury using the genlayer-js SDK.
 
 ---
 
@@ -31,23 +29,23 @@ This tool is built entirely with genlayer-js and connects directly to GenLayer S
 
 ### Contract Inspector
 
-Paste any contract address and instantly see the full decoded state, all available methods, and the contract transaction history.
+Paste any contract address and see the full decoded state along with all available methods.
 
 ### Transaction Browser
 
-Browse all transactions on the network with filters by status, contract, and time. Click any transaction to see the full execution trace including each validator LLM call and result.
+Look up any transaction by hash and see the full execution trace including each validator's LLM call and result.
 
 ### Validator Monitor
 
-Live view of all active validators, their assigned LLM provider, current stake, and recent voting history. See exactly how Optimistic Democracy reaches consensus on each transaction.
+Live view of active validators, their assigned LLM provider, and recent voting history. Shows how Optimistic Democracy reaches consensus on each transaction.
 
 ### Equivalence Viewer
 
-For each non-deterministic transaction, see side by side what each validator LLM returned and how the Equivalence Principle resolved differences between them.
+For each non-deterministic transaction, shows what each validator's LLM returned and how the Equivalence Principle resolved any differences.
 
 ### Network Stats
 
-At a glance metrics including total transactions, finalization rate, average consensus time, active validators, and current epoch.
+Basic metrics including current block, network status, and last update time.
 
 ---
 
@@ -82,8 +80,6 @@ Node.js v18 or higher, Docker Desktop for GenLayer Studio, GenLayer CLI installe
 
 ### genlayer.js
 
-Create frontend/src/genlayer.js:
-
 ```javascript
 import { createClient, simulator } from "@genlayer/js";
 
@@ -93,8 +89,6 @@ export const client = createClient({
 ```
 
 ### App.jsx
-
-Create frontend/src/App.jsx:
 
 ```jsx
 import { useState, useEffect } from "react";
@@ -142,7 +136,6 @@ export default function App() {
           Real time visibility into GenLayer Intelligent Contracts and Optimistic Democracy
         </p>
       </header>
-
       <nav className="tab-nav">
         {tabs.map((t) => (
           <button
@@ -154,7 +147,6 @@ export default function App() {
           </button>
         ))}
       </nav>
-
       <main className="main-content">
         {tab === "stats" && <NetworkStats client={client} />}
         {tab === "contracts" && <ContractInspector client={client} />}
@@ -167,8 +159,6 @@ export default function App() {
 ```
 
 ### NetworkStats.jsx
-
-Create frontend/src/components/NetworkStats.jsx:
 
 ```jsx
 import { useState, useEffect } from "react";
@@ -203,9 +193,6 @@ export default function NetworkStats({ client }) {
   return (
     <section className="network-stats">
       <h2>Network Overview</h2>
-      <p className="section-desc">
-        Live metrics from the GenLayer network. Refreshes every 5 seconds.
-      </p>
       <div className="stats-grid">
         <div className="stat-card">
           <span className="stat-label">Current Block</span>
@@ -231,8 +218,6 @@ export default function NetworkStats({ client }) {
 
 ### ContractInspector.jsx
 
-Create frontend/src/components/ContractInspector.jsx:
-
 ```jsx
 import { useState } from "react";
 
@@ -247,7 +232,6 @@ export default function ContractInspector({ client }) {
     setLoading(true);
     setError(null);
     setContractData(null);
-
     try {
       const [schema, state] = await Promise.all([
         client.getContractSchema({ address }),
@@ -289,8 +273,6 @@ export default function ContractInspector({ client }) {
 
 ### TransactionBrowser.jsx
 
-Create frontend/src/components/TransactionBrowser.jsx:
-
 ```jsx
 import { useState } from "react";
 
@@ -305,7 +287,6 @@ export default function TransactionBrowser({ client }) {
     setLoading(true);
     setError(null);
     setTxData(null);
-
     try {
       const receipt = await client.getTransactionReceipt({ hash: txHash });
       setTxData(receipt);
@@ -344,8 +325,6 @@ export default function TransactionBrowser({ client }) {
 
 ### ValidatorMonitor.jsx
 
-Create frontend/src/components/ValidatorMonitor.jsx:
-
 ```jsx
 import { useState, useEffect } from "react";
 
@@ -380,10 +359,7 @@ export default function ValidatorMonitor({ client }) {
   return (
     <section className="validator-monitor">
       <h2>Validator Monitor</h2>
-      <p className="section-desc">
-        Active validators in the GenLayer network. Each runs a different LLM and
-        independently validates transactions through Optimistic Democracy.
-      </p>
+      <p>Active validators in the GenLayer network. Each runs a different LLM and independently validates transactions through Optimistic Democracy.</p>
       <div className="validators-grid">
         {validators.map((v, i) => (
           <div key={v.id || i} className="validator-card">
@@ -401,8 +377,6 @@ export default function ValidatorMonitor({ client }) {
 ```
 
 ### package.json
-
-Create frontend/package.json:
 
 ```json
 {
@@ -476,7 +450,7 @@ genlayer-explorer/
 
 ## Resources
 
-Official Docs: https://docs.genlayer.com
+GenLayer Docs: https://docs.genlayer.com
 
 GenLayerJS SDK: https://docs.genlayer.com/developers/decentralized-applications/genlayer-js
 
@@ -485,7 +459,3 @@ GenLayer Node API: https://docs.genlayer.com/api-references/genlayer-node
 Optimistic Democracy: https://docs.genlayer.com/understand-genlayer-protocol/core-concepts/optimistic-democracy
 
 GenLayer Studio: https://studio.genlayer.com
-
-Discord: https://discord.gg/8Jm4v89VAu
-
-X Twitter: https://x.com/GenLayer
