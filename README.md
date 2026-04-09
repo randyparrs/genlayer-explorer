@@ -19,7 +19,7 @@ A developer dashboard to visualize transactions, contract state, and validator c
 
 ## What Is GenLayer Explorer
 
-GenLayer Explorer started as a personal tool I built to better understand what was actually happening when I deployed contracts to the GenLayer network. The Studio is great for deploying and running transactions, but I wanted something that showed me the full picture in one place — which validators ran, what models they used, whether they agreed, and what the contract state looked like after.
+GenLayer Explorer started as a personal tool I built to better understand what was actually happening when I deployed contracts to the GenLayer network. The Studio is great for deploying and running transactions, but I wanted something that showed me the full picture in one place  which validators ran, what models they used, whether they agreed, and what the contract state looked like after.
 
 It connects directly to GenLayer Studio locally or to Testnet Bradbury using the genlayer-js SDK.
 
